@@ -1,0 +1,41 @@
+# FunASR API Server - Docker Compose
+# 单一镜像/容器，通过 .env 文件控制运行模式（CPU/GPU）
+# 所有配置变量从 .env 文件加载，使用前请执行 cp .env.example .env
+#
+# 用法:
+#   docker compose up -d --build
+#
+# GPU 模式: 在 .env 中设置 FUNASR_DEVICE=cuda FUNASR_ENGINE=vllm FUNASR_MODEL=fun-asr-nano
+# CPU 模式: 在 .env 中设置 FUNASR_DEVICE=cpu  FUNASR_ENGINE=auto FUNASR_MODEL=sensevoice
+#
+# 模型缓存: 通过 MODELSCOPE_CACHE 环境变量指定宿主机目录，映射到容器内
+# 时区:     TZ=Asia/Shanghai
+# GPU 透传: 已启用，需安装 NVIDIA Container Toolkit
+
+services:
+  funasr-api:
+    build:
+      context: .
+    ports:
+      - "${FUNASR_PORT:-8000}:${FUNASR_PORT:-8000}"
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Shanghai
+      - MODELSCOPE_CACHE=${MODELSCOPE_CACHE:-/root/.cache/modelscope}
+    volumes:
+      - ${MODELSCOPE_CACHE:-./model_cache}:/root/.cache/modelscope
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, os; urllib.request.urlopen(f'http://localhost:{os.environ.get(\"FUNASR_PORT\", \"8000\")}/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 180s
+      retries: 3
