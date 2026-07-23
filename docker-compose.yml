@@ -25,6 +25,7 @@ services:
       - MODELSCOPE_CACHE=${MODELSCOPE_CACHE:-/root/.cache/modelscope}
     volumes:
       - ${MODELSCOPE_CACHE:-./model_cache}:/root/.cache/modelscope
+      - ./app:/app/app
     restart: unless-stopped
     deploy:
       resources:

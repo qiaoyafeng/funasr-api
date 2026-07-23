@@ -16,11 +16,13 @@ RUN sed -i 's|deb.debian.org|mirrors.aliyun.com|g' /etc/apt/sources.list.d/debia
     || true
 
 # Install system dependencies
+# gcc is required by Triton (vLLM CUDA kernel compilation)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     ffmpeg \
     curl \
     tzdata \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # Set timezone
@@ -35,9 +37,8 @@ ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /app
 
 # Copy project files
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md ./
 COPY app/ ./app/
-COPY run.py ./
 
 # Install all dependencies (including vLLM extra for GPU support)
 RUN uv sync --frozen --no-dev --extra vllm --no-install-project
