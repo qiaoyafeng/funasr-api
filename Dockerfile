@@ -16,14 +16,16 @@ RUN sed -i 's|deb.debian.org|mirrors.aliyun.com|g' /etc/apt/sources.list.d/debia
     || true
 
 # Install system dependencies
-# gcc is required by Triton (vLLM CUDA kernel compilation)
+# gcc: required by Triton (vLLM CUDA kernel compilation)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     ffmpeg \
     curl \
     tzdata \
     gcc \
+    gnupg \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Set timezone
 ENV TZ=Asia/Shanghai
