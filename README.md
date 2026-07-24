@@ -8,8 +8,8 @@
 - **离线转写**：HTTP REST、OpenAI Whisper 兼容 API、WebSocket
 - **实时流式**：WebSocket 流式识别，partial 实时预览
 - **uv 项目管理**：快速依赖安装与锁定
-- **Docker 部署**：单一镜像，通过 .env 环境变量切换 CPU/GPU 模式
-- **国内镜像加速**：uv 安装使用 Gitee 定制版，PyPI 使用阿里云镜像源
+- **Docker 部署**：基于 vLLM 官方镜像，通过 .env 环境变量切换 CPU/GPU 模式
+- **国内镜像加速**：apt/PyPI 使用阿里云源，uv 从 Gitee 定制版安装
 
 ## 快速开始
 
@@ -105,9 +105,12 @@ docker compose exec funasr-api python -c "import urllib.request; print(urllib.re
 
 ### Docker 镜像说明
 
-- 基础镜像：`python:3.10-slim`
+- 基础镜像：`vllm/vllm-openai:v0.19.0`（预装 CUDA/torch/vllm/triton 运行时环境）
+- 依赖安装：`uv pip install --system`（安装到系统 Python，复用镜像预装包）
+- 入口点：清空 vLLM 镜像默认 ENTRYPOINT，直接运行 `funasr-api` 控制台脚本
+- PYTHONPATH：设置 `/app`，支持 docker-compose 卷挂载热更新
 - uv 安装：从 Gitee 定制版安装（`gitee.com/wangnov/uv-custom`）
-- PyPI 镜像：阿里云源 `https://mirrors.aliyun.com/pypi/simple/`
+- 镜像源：apt 和 PyPI 均使用阿里云源
 - 时区：`Asia/Shanghai`
 - 模型缓存：通过 `MODELSCOPE_CACHE` 环境变量指定宿主机目录，映射到容器 `/root/.cache/modelscope`
 - GPU 透传：通过 `deploy.resources` 配置 NVIDIA GPU，需安装 NVIDIA Container Toolkit

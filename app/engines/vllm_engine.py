@@ -90,7 +90,7 @@ class VLLMEngine(ASREngine):
 
         # Build generate kwargs - safe defaults for API stability
         generate_kwargs = {
-            "input": audio_path,
+            "inputs": audio_path,
             "language": language or "auto",
             "temperature": 0.0,
             "repetition_penalty": 1.0,  # Must be 1.0 for EmbedsPrompt
