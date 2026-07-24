@@ -1,20 +1,14 @@
 """FunASR Unified API Server - Main entry point."""
 
-import logging
 from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
 
+from app.log_config import logger, UVICORN_LOG_CONFIG
 from app.config import parse_args, settings as global_settings
 from app.engines.base import ASREngine
 from app.routers import offline, realtime, system
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
-)
-logger = logging.getLogger(__name__)
 
 # Global engine instance
 _engine: ASREngine | None = None
@@ -107,6 +101,7 @@ def main():
         host=global_settings.host,
         port=global_settings.port,
         log_level="info",
+        log_config=UVICORN_LOG_CONFIG,
     )
 
 

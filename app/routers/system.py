@@ -1,14 +1,12 @@
 """System routes: /health, /v1/models."""
 
-import logging
-
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
 from app.schemas import HealthResponse, ModelListResponse, ModelInfo
 from app.config import settings
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 router = APIRouter()
 

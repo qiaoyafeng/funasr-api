@@ -3,7 +3,6 @@
 import asyncio
 import re
 import time
-import logging
 from typing import AsyncGenerator, Optional
 
 import numpy as np
@@ -18,7 +17,7 @@ from app.schemas import (
 )
 from app.config import Settings
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 # Model configurations for AutoModel
 MODEL_CONFIGS = {

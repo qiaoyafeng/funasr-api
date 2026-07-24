@@ -55,7 +55,8 @@ ENV FUNASR_HOST=0.0.0.0 \
     FUNASR_DEVICE=cpu \
     FUNASR_ENGINE=auto \
     FUNASR_MODEL=sensevoice \
-    MODELSCOPE_CACHE=/root/.cache/modelscope
+    MODELSCOPE_CACHE=/root/.cache/modelscope \
+    FUNASR_LOG_DIR=logs
 
 EXPOSE ${FUNASR_PORT:-8000}
 

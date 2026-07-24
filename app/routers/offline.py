@@ -1,7 +1,6 @@
 """Offline transcription routes: POST /asr, POST /v1/audio/transcriptions, WS /ws."""
 
 import json
-import logging
 from typing import Optional
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, WebSocket, WebSocketDisconnect
@@ -16,7 +15,7 @@ from app.schemas import (
 from app.audio_utils import save_upload_file, cleanup_temp_file, get_file_extension
 from app.config import settings
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 router = APIRouter()
 

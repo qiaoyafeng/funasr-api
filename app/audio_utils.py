@@ -2,13 +2,12 @@
 
 import os
 import tempfile
-import logging
 from typing import Optional
 
 import numpy as np
 import soundfile as sf
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 # Supported audio extensions
 SUPPORTED_EXTENSIONS = {".wav", ".mp3", ".flac", ".m4a", ".ogg", ".webm", ".pcm"}

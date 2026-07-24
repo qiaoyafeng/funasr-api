@@ -1,7 +1,6 @@
 """WebSocket session management for realtime streaming ASR."""
 
 import asyncio
-import logging
 import time
 from typing import Optional
 
@@ -10,7 +9,7 @@ import numpy as np
 from app.schemas import StreamResult, StreamSentence
 from app.config import Settings
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 
 class RealtimeASRSession:

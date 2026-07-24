@@ -1,13 +1,11 @@
 """Realtime streaming WebSocket route: /ws/realtime."""
 
-import logging
-
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.ws_session import RealtimeASRSession
 from app.config import settings
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 router = APIRouter()
 
